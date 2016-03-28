@@ -1,0 +1,693 @@
+
+
+
+TEAM 67
+Joe Sadler
+Jayden Gardiner
+Vishaak Ravi
+
+Project 3 Deliverable: Queries
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create table statements
+
+CREATE TABLE Customer(
+  Username VARCHAR(30) NOT NULL UNIQUE,
+  PASSWORD VARCHAR(30) NOT NULL,
+  Email VARCHAR(50) NOT NULL UNIQUE,
+  PRIMARY KEY(Username)
+);
+CREATE TABLE Manager(
+  Username VARCHAR(30) NOT NULL UNIQUE,
+  PASSWORD VARCHAR(30) NOT NULL,
+  PRIMARY KEY(Username)
+);
+CREATE TABLE Feedback(
+  RatingID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  Location VARCHAR(30) NOT NULL,
+  Rating INT NOT NULL,
+  COMMENT VARCHAR(5000),
+  DATE DATE NOT NULL,
+  LeftBy VARCHAR(30) NOT NULL,
+  FOREIGN KEY(LeftBy) REFERENCES Customer(Username),
+  PRIMARY KEY(RatingID)
+);
+CREATE TABLE Credit_Card(
+  Card_Number INT NOT NULL UNIQUE,
+  Name_on_Card VARCHAR(30) NOT NULL,
+  Exp_Date DATE NOT NULL,
+  CVV INT NOT NULL,
+  Customer VARCHAR(30) NOT NULL,
+  FOREIGN KEY(Customer) REFERENCES Customer(Username),
+  PRIMARY KEY(Card_Number)
+);
+CREATE TABLE Room(
+  Room_Num INT NOT NULL,
+  Room_Catag VARCHAR(30) NOT NULL,
+  Persons_Allowed INT NOT NULL,
+  CostPerDay DECIMAL(10, 2) NOT NULL,
+  Location VARCHAR(30) NOT NULL,
+  CostOfExtraBed DECIMAL(10, 2) NOT NULL,
+  PRIMARY KEY(Room_Num, Location)
+);
+CREATE TABLE Reservation(
+  ReservationID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  Start_Date DATE NOT NULL,
+  End_Date DATE NOT NULL,
+  isCanceled BOOLEAN NOT NULL DEFAULT 0,
+  Total_Cost DECIMAL(10, 2) NOT NULL,
+  Customer VARCHAR(30) NOT NULL,
+  CreditCardNum INT NOT NULL,
+  FOREIGN KEY(Customer) REFERENCES Customer(Username),
+  FOREIGN KEY(CreditCardNum) REFERENCES Credit_Card(Card_Number),
+  PRIMARY KEY(ReservationID)
+);
+CREATE TABLE Reserves(
+  ExtraBed BOOLEAN NOT NULL DEFAULT 0,
+  Room_Num INT NOT NULL,
+  Location VARCHAR(30) NOT NULL,
+  ReservationID INT NOT NULL UNIQUE,
+  FOREIGN KEY(Room_Num, Location) REFERENCES Room(Room_Num, Location),
+  FOREIGN KEY(ReservationID) REFERENCES Reservation(ReservationID),
+  PRIMARY KEY(
+    Room_Num,
+    Location,
+    ReservationID
+  )
+);
+
+
+
+
+
+
+
+
+
+populating the database
+#15 Customers
+INSERT INTO customer(Username, PASSWORD, Email)
+             VALUES('C_mark', 'gt12345', 'mark@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_vladimir', 'putin4pres', 'vlad@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_barack', 'obama4pres', 'barack@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_kanye', 'iamthebest', 'yeezy@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_leo', 'betterthanronaldo', 'messi@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_joe', 'gpburdell12', 'joe@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_jane', 'jane12345', 'jane@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_ashley', 'ashley12345', 'ashley@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_hillary', 'hillary12345', 'hillary@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_sarah', 'sarah12345', 'sarah@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_ellen', 'ellen12345', 'ellen@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_luke', 'luke12345', 'luke@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_bob', 'bob12345', 'bob@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_tom', 'tom12345', 'tom@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_jeremy', 'jeremy12345', 'jeremy@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_adam', 'adam12345', 'adam@gatech.edu');
+
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_eric', 'eric12345', 'eric@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_sam', 'sam12345', 'sam@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_cam', 'cam12345', 'cam@gatech.edu');
+INSERT INTO customer(Username, PASSWORD, Email)
+    VALUES('C_jimmy', 'jimmy12345', 'jimmy@gatech.edu');
+
+#5 Managers
+
+INSERT INTO manager(Username, PASSWORD)
+    VALUES('M_jayden', 'jayden12345');
+INSERT INTO manager(Username, PASSWORD)
+    VALUES('M_mou', 'mou12345');
+INSERT INTO manager(Username, PASSWORD)
+    VALUES('M_pep', 'pep12345');
+INSERT INTO manager(Username, PASSWORD)
+    VALUES('M_arsene', 'arsene12345');
+INSERT INTO manager(Username, PASSWORD)
+    VALUES('M_luis', 'luis12345');
+
+#8 rooms in 5 locations
+#Atlanta
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('100', 'standard', '2', '100', 'Atlanta', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('101', 'family', '4', '170', 'Atlanta', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('102', 'suite', '4', '250', 'Atlanta', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('103', 'standard', '2', '100', 'Atlanta', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('104', 'family', '4', '170', 'Atlanta', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('200', 'standard', '2', '100', 'Atlanta', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('201', 'suite', '4', '250', 'Atlanta', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('202', 'suite', '4', '250', 'Atlanta', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('203', 'family', '4', '170', 'Atlanta', '50');
+#Charlotte
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('100', 'standard', '2', '100', 'Charlotte', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('101', 'family', '4', '170', 'Charlotte', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('102', 'suite', '4', '250', 'Charlotte', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('103', 'standard', '2', '100', 'Charlotte', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('104', 'family', '4', '170', 'Charlotte', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('200', 'standard', '2', '100', 'Charlotte', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('201', 'suite', '4', '250', 'Charlotte', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('202', 'suite', '4', '250', 'Charlotte', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('203', 'family', '4', '250', 'Charlotte', '50');
+
+#Savannah
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('100', 'standard', '2', '100', 'Savannah', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+          VALUES('101', 'family', '4', '170', 'Savannah', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('102', 'suite', '4', '250', 'Savannah', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('103', 'standard', '2', '100', 'Savannah', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('104', 'family', '4', '170', 'Savannah', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('200', 'standard', '2', '100', 'Savannah', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('201', 'suite', '4', '250', 'Savannah', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('202', 'suite', '4', '250', 'Savannah', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('203', 'family', '4', '170', 'Savannah', '50');
+#Orlando
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('100', 'standard', '2', '100', 'Orlando', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('101', 'family', '4', '170', 'Orlando', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('102', 'suite', '4', '250', 'Orlando', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('103', 'standard', '2', '100', 'Orlando', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('104', 'family', '4', '170', 'Orlando', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('200', 'standard', '2', '100', 'Orlando', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('201', 'suite', '4', '250', 'Orlando', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('202', 'suite', '4', '250', 'Orlando', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('203', 'family', '4', '170', 'Orlando', '50');
+#Miami
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('100', 'standard', '2', '100', 'Miami', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('101', 'family', '4', '170', 'Miami', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('102', 'suite', '4', '250', 'Miami', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('103', 'standard', '2', '100', 'Miami', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('104', 'family', '4', '170', 'Miami', '50');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('200', 'standard', '2', '100', 'Miami', '70');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('201', 'suite', '4', '250', 'Miami', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('202', 'suite', '4', '250', 'Miami', '150');
+INSERT INTO room(Room_Num, Room_Catag, Persons_Allowed, CostPerDay, Location, CostofExtraBed)
+    VALUES('203', 'family', '4', '170', 'Miami', '50');
+
+#40 reservations, 20 of which have future date; >= 7 have an extra bed. >=5 reservations in each of the locations
+
+
+*these reservations wont work unless you insert customer and credit card details into the database first due to foreign key constraints.*
+ALTER TABLE reservation AUTO_INCREMENT=0;
+ALTER TABLE feedback AUTO_INCREMENT=0;
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+VALUES('1','2015-12-05', '2015-12-08', '0', '1200', 'C_vladimir', '1000');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+    VALUES('1','102', 'Atlanta', '1');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('02','2015-12-06', '2015-12-07', '0', '400', 'C_mark', '1001');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('1','102', 'Orlando', '2');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('03','2015-12-10', '2015-12-12', '0', '800', 'C_barack', '1002');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('1','102', 'Charlotte', '3');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('04','2015-12-05', '2015-12-08', '0', '1200', 'C_kanye', '1003');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('1','102', 'Miami', '4');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('05','2015-12-05', '2015-12-08', '0', '1200', 'C_jane', '1006');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('1','102', 'Savannah', '5');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('06','2015-12-05', '2015-12-08', '0', '660', 'C_leo', '1004');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('1','101', 'Atlanta', '6');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('07','2015-12-05', '2015-12-08', '0', '660', 'C_joe', '1005');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('1','101', 'Orlando', '7');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('08','2015-12-05', '2015-12-08', '0', '660', 'C_ashley', '1007');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('1','101', 'Charlotte', '8');
+
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('09','2015-12-05', '2015-12-08', '0', '510', 'C_hillary', '1008');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','101', 'Savannah', '09');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('10','2015-12-05', '2015-12-08', '0', '510', 'C_ellen', '2000');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','101', 'Miami', '10');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('11','2015-12-18', '2015-12-20', '0', '200', 'C_luke', '2001');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','100', 'Atlanta', '11');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('12','2015-12-18', '2015-12-20', '0', '200', 'C_bob', '2002');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','100', 'Orlando', '12');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('13','2015-12-18', '2015-12-20', '0', '200', 'C_tom', '2003');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','100', 'Charlotte', '13');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('14','2015-12-18', '2015-12-20', '0', '200', 'C_jeremy', '2004');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','100', 'Savannah', '14');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('15','2015-12-18', '2015-12-20', '0', '200', 'C_sarah', '1009');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','100', 'Miami', '15');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('16','2015-12-18', '2015-12-20', '0', '200', 'C_mark', '1001');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','200', 'Atlanta', '16');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('17','2015-12-18', '2015-12-20', '0', '200', 'C_vladimir', '1000');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','200', 'Orlando', '17');
+
+
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('18','2015-12-18', '2015-12-20', '0', '200', 'C_barack', '1002');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','200', 'Charlotte', '18');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('19','2015-12-18', '2015-12-20', '0', '200', 'C_kanye', '1003');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','200', 'Savannah', '19');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('20','2015-12-18', '2015-12-20', '0', '200', 'C_jane', '1006');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','200', 'Miami', '20');
+
+
+#>= 10 canceled reservations.
+#21-30 are cancelled, 31-40 are not
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('21','2015-09-18', '2015-09-20', '1', '340', 'C_ashley', '1007');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','104', 'Atlanta', '21');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('22','2015-09-18', '2015-09-20', '1', '340', 'C_hillary', '1008');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','104', 'Orlando', '22');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('23','2015-09-18', '2015-09-20', '1', '340', 'C_sarah', '1009');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','104', 'Charlotte', '23');
+
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('24','2015-09-18', '2015-09-20', '1', '340', 'C_ellen', '2000');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','104', 'Savannah', '24');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('25','2015-09-18', '2015-09-20', '1', '340', 'C_luke', '2001');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','104', 'Miami', '25');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('26','2015-09-18', '2015-09-20', '1', '500', 'C_bob', '2002');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','202', 'Atlanta', '26');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('27','2015-09-18', '2015-09-20', '1', '500', 'C_tom', '2003');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','202', 'Orlando', '27');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('28','2015-09-18', '2015-09-20', '1', '500', 'C_jeremy', '2004');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','202', 'Charlotte', '28');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('29','2015-09-18', '2015-09-20', '1', '500', 'C_mark', '1001');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','202', 'Savannah', '29');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('30','2015-09-18', '2015-09-20', '1', '500', 'C_vladimir', '1000');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','202', 'Miami', '30');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('31','2015-10-06', '2015-10-07', '0', '170', 'C_barack', '1002');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','203', 'Atlanta', '31');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('32','2015-10-06', '2015-10-07', '0', '170', 'C_kanye', '1003');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','203', 'Orlando', '32');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('33','2015-10-06', '2015-10-07', '0', '170', 'C_leo', '1004');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','203', 'Charlotte', '33');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('34','2015-10-06', '2015-10-07', '0', '170', 'C_joe', '1005');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','203', 'Savannah', '34');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('35','2015-10-06', '2015-10-07', '0', '170', 'C_jane', '1006');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','203', 'Miami', '35');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('36','2015-11-06', '2015-11-07', '0', '100', 'C_ashley', '1007');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','103', 'Atlanta', '36');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('37','2015-11-06', '2015-11-07', '0', '100', 'C_hillary', '1008');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','103', 'Orlando', '37');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('38','2015-11-06', '2015-11-07', '0', '100', 'C_sarah', '1009');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','103', 'Charlotte', '38');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('39','2015-11-06', '2015-11-07', '0', '100', 'C_ellen', '2000');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','103', 'Savannah', '39');
+INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+          VALUES('40','2015-11-06', '2015-11-07', '0', '100', 'C_luke', '2001');
+INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+          VALUES('0','103', 'Miami', '40');
+
+#At least 5 customers without any payment info already stored. Use these customers to demo the use case where such a customer would not be allowed to make a reservation because he does not have a credit card stored
+
+
+#Use these as the valid credit card inserts(10 total)
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1000', 'Vladamir Putin', '2016-01-05', '179', 'C_vladimir');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1001', 'Mark Zuckerberg', '2016-01-05', '100', 'C_mark');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1002', 'Barack Obama', '2016-01-05', '105', 'C_barack');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1003', 'Kanye West', '2016-01-05', '224', 'C_kanye');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1004', 'Lionel Messi', '2016-01-05', '254', 'C_leo');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1005', 'Joe Smith', '2016-01-05', '823', 'C_joe');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1006', 'Jane Adams', '2016-01-05', '012', 'C_jane');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1007', 'Ashley Bryant', '2016-01-05', '999', 'C_ashley');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1008', 'Hillary Clinton', '2016-01-05', '284', 'C_hillary');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('1009', 'Sarah Dean', '2016-01-05', '763', 'C_sarah');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('2000', 'Ellen Page', '2016-01-05', '763', 'C_ellen');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('2001', 'Luke Bryant', '2016-01-05', '763', 'C_luke');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('2002', 'Bob Builder', '2016-01-05', '763', 'C_bob');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('2003', 'Tom Brady', '2016-01-05', '763', 'C_tom');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('2004', 'Jeremy Clarkson', '2016-01-05', '763', 'C_jeremy');
+
+#Adam, eric, sam, cam and jimmy do not have cards stored
+
+
+
+#There should be at least 5 customers with more than 1 credit card
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('3000', 'Vladamir Putin', '2016-01-05', '998', 'C_vladimir');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('3001', 'Mark Zuckerberg', '2016-01-05', '103', 'C_mark');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('3002', 'Barack Obama', '2016-01-05', '199', 'C_barack');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('3003', 'Kanye West', '2016-01-05', '752', 'C_kanye');
+INSERT INTO credit_card(Card_Number, Name_On_Card, Exp_Date, CVV, Customer)
+          VALUES('3004', 'Lionel Messi', '2016-01-05', '888', 'C_leo');
+#There should be at least 20 reviews stored in the database for different locations
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('01', 'Atlanta', 'Excellent', 'Great Service', '2015-12-08', 'C_vladimir');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('02', 'Orlando', 'Good', 'It was decent', '2015-12-07', 'C_mark');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('03', 'Charlotte', 'Very Bad', 'Ran out of waffles', '2015-12-12', 'C_barack');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('04', 'Miami', 'Excellent, 'Would come back again.', '2015-12-08', 'C_kanye');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('05', 'Savannah', 'Bad', 'Poor service.', '2015-12-08', 'C_jane');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('06', 'Atlanta', 'Good', 'Food tasted great.', '2015-12-08', 'C_leo');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('07', 'Orlando', 'Good', 'Great weather here.', '2015-12-08', 'C_joe');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('08', 'Charlotte', 'Excellent', 'Excellent management and staff', '2015-12-08', 'C_ashley');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('09', 'Savannah', 'Very Bad', 'Unclean rooms', '2015-12-08', 'C_hillary');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('10', 'Miami', 'Very Bad', 'Unclean rooms', '2015-12-20', 'C_sarah');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('11', 'Atlanta', 'Neutral', 'Could have been better', '2015-12-20', 'C_mark');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('12', 'Orlando', 'Bad', 'Terrible food', '2015-12-20', 'C_vladimir');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('13', 'Charlotte', 'Excellent', 'Great waffles', '2015-12-20', 'C_barack');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('14', 'Savannah', 'Good', 'Pretty good I guess', '2015-12-20', 'C_kanye');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('15', 'Miami', 'Excellent', 'Basically perfect', '2015-12-20', 'C_jane');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('16', 'Atlanta', 'Good', 'Good city to visit', '2015-10-07', 'C_barack');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('17', 'Orlando', 'Very Bad', 'Are they even trying?', '2015-10-07', 'C_kanye');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('18', 'Charlotte', 'Good', 'Good workout facility', '2015-10-07', 'C_leo');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('19', 'Savannah', 'Excellent', 'Good weekend for myself', '2015-10-07', 'C_joe');
+INSERT INTO feedback(RatingID, Location, Rating, Comment, DATE, LeftBy)
+          VALUES('20', 'Miami', 'Excellent', 'Would recommend to friends', '2015-10-07', 'C_jane');
+
+
+
+
+
+
+#addcard
+    $sql = "INSERT INTO credit_card(Card_Number, Name_on_Card, Exp_Date, CVV, Customer)
+            VALUES('$card_num', '$name_on_card', '$exp_date', '$cvv', '$customer')";
+
+
+#calculatecostofroom
+    $sql = "SELECT DISTINCT Room.CostPerDay, Room.CostOfExtraBed
+            FROM Room Room, Reserves Resv
+            WHERE Room.Room_Num = '$room_num' AND Room.Location = '$location' AND Room.Location = Resv.Location AND (Room.Room_Num NOT IN(
+                SELECT DISTINCT Resv.Room_Num
+                FROM Reserves Resv,Reservation Res
+                WHERE (Res.Start_Date <= '$enddate' AND Res.End_Date >= '$enddate' OR Res.Start_Date <= '$startdate' AND Res.End_Date >= '$startdate' OR Res.Start_Date >= '$startdate' AND Res.End_Date <= '$enddate')))
+            ORDER BY Room.CostPerDay";
+
+
+#cancelreservation
+    $sql = "    UPDATE reservation
+                SET isCanceled = '1'
+                WHERE ReservationID = '$resID'";
+
+
+#deletecard
+    $sql = "DELETE
+            FROM credit_card
+            WHERE Card_Number = '$card_num' AND Customer = '$customer'";
+
+
+#findrooms
+    $sql = "SELECT DISTINCT Room.Room_Num, Room.Room_Catag, Room.Persons_Allowed, Room.CostPerDay, Room.CostOfExtraBed
+            FROM Room Room, Reserves Resv
+            WHERE Room.Location = '$location' AND (Room.Room_Num IN(
+                SELECT Resv.Room_Num
+                FROM Reserves Resv,Reservation Res
+                WHERE (Res.Start_Date > '$enddate' OR Res.End_Date < '$startdate')))
+            ORDER BY Room.CostPerDay";
+
+
+#search for credit card
+    $sql = "SELECT *
+            FROM credit_card
+            WHERE Card_Number = '$card_num' AND Customer = '$customer'";
+
+
+#insert into reservation and reserves
+    $sql="INSERT INTO reservation(ReservationID, Start_Date, End_Date, isCanceled, Total_Cost, Customer, CreditCardNum)
+        VALUES(NULL, '$start_date', '$end_date', '0', '$totalCost', '$customer', '$card_num')";
+    $sql=   "INSERT INTO reserves(ExtraBed, Room_Num, Location, ReservationID)
+            VALUES('$extra_bed', '$room_num', '$location','$resID')"; 
+
+
+#provide review
+    $sql = "INSERT INTO feedback(RatingID, Location, Rating, Comment, Date, LeftBy)
+            VALUES(NULL, '$location', '$rating','$comment', '$date', '$username')"; 
+
+
+#signin
+    $sql = "SELECT * 
+            FROM customer
+            WHERE Username='$username' AND PASSWORD='$password'";
+
+
+#signup
+    $sql = "SELECT * 
+            FROM customer
+            WHERE Username='$username'";
+
+
+#if username not found then enter user info into table
+        $sql="INSERT INTO customer(Username, PASSWORD, Email)
+          VALUES('$username', '$password', '$email')"; 
+
+
+#updatereservation
+    $sql = "UPDATE reservation
+            SET End_Date = '$end_date',
+                Start_Date = '$start_date'
+            WHERE ReservationID =  '$resID'";
+
+
+#viewhotelreview
+    $sql = "SELECT * 
+            FROM feedback
+            WHERE Location='$location'";
+
+
+
+#reservation report
+
+FOR AUGUST:
+
+
+SELECT MONTH(reservation.Start_Date) AS Month , reserves.Location , COUNT(reserves.ReservationID)
+                FROM reservation, reserves
+                where MONTH(reservation.Start_Date) = 8
+                and reservation.ReservationID = reserves.ReservationID
+                GROUP BY MONTH(reservation.Start_Date), reserves.Location
+
+FOR September:
+
+
+SELECT MONTH(reservation.Start_Date) AS Month , reserves.Location , COUNT(reserves.ReservationID)
+                FROM reservation, reserves
+                where MONTH(reservation.Start_Date) = 9
+                and reservation.ReservationID = reserves.ReservationID
+                GROUP BY MONTH(reservation.Start_Date), reserves.Location
+
+
+
+
+#popular room category report
+
+
+
+SELECT MONTH(reservation.Start_Date) AS Month, room.Room_Catag , reserves.Location , COUNT(reserves.ReservationID)
+                FROM reservation, room, reserves
+                where MONTH(reservation.Start_Date) = 12
+                and reservation.ReservationID = reserves.ReservationID
+                and room.Location = reserves.Location
+                and room.Room_Num = reserves.Room_Num
+                GROUP BY reserves.Location, room.Room_Catag
+                ORDER BY (COUNT(reserves.ReservationID)) DESC
+
+
+
+#revenue report
+
+
+FOR August:
+
+SELECT MONTH(reservation.Start_Date) AS Month , reserves.Location , SUM(reservation.Total_Cost)
+                FROM reservation, reserves
+                where MONTH(reservation.Start_Date) = 9
+                and reservation.ReservationID = reserves.ReservationID
+                GROUP BY MONTH(reservation.Start_Date), reserves.Location
+
+
+FOR September:
+
+SELECT MONTH(reservation.Start_Date) AS Month , reserves.Location , SUM(reservation.Total_Cost)
+                    FROM reservation, reserves
+                    where MONTH(reservation.Start_Date) = 10
+                    and reservation.ReservationID = reserves.ReservationID
+                    GROUP BY MONTH(reservation.Start_Date), reserves.Location
