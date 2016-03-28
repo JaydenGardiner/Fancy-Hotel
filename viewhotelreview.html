@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<!--
+	Astral by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>View Hotel Review</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/init.js"></script>
+		<script type="text/javascript">
+
+        </script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+			<link rel="stylesheet" href="css/style-noscript.css" />
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	</head>
+	<body onload="getName()">
+
+		<!-- Wrapper-->
+			<div id="wrapper">
+				
+				<!-- Nav -->
+					<nav id="nav">
+						<a href="#me" class="icon fa-home active"><span>Home</span></a>
+						<a href="#app" class="icon fa-bed"><span>Application</span></a>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						
+						<!-- Me -->
+							<article id="me" class="panel">
+								<header>
+									<h1>Fancy Hotel</h1>
+									<p>Book a fancy hotel today!</p>
+								</header>
+								<a href="#app" class="jumplink pic">
+									<span class="arrow icon fa-chevron-right"><span></span></span>
+									<img src="http://cache.marriott.com/propertyimages/b/budhu/phototour/budhu_phototour42.jpg?Log=1" alt="" width="560">
+								</a>
+							</article>
+
+						<!-- app --> 
+                            <article id="app" class="panel">
+                                    <div id="container"> 
+                                        <p id="msg">
+                                            <form id="signInForm" name="signInForm" method="POST">
+                                        Hotel Location:
+                                        <select id="City" name="City">
+                                        <option id="City" name="City" value="">Select a City</option>
+                                        <option id="City" name="City" value="Atlanta">Atlanta</option>
+                                        <option id="City" name="City" value="Charlotte">Charlotte</option>
+                                        <option id="City" name="City" value="Savannah">Savannah</option>
+                                        <option id="City" name="City" value="Orlando">Orlando</option>
+                                        <option id="City" name="City" value="Miami">Miami</option>
+                                        </select><br>
+                                        <button onclick="search()" type="button">Check Reviews</button>
+                                            </form>
+                                    	</p>
+                                    </div>
+
+                                    <script>
+                                    	function getName() {
+				                            if (localStorage.username == null || localStorage.username == "null") {
+				                                window.location.href = 'http://localhost/xampp/prj3/index.html#app';
+				                            }
+                                    		var logout = "Log out?";
+											document.getElementById("user").innerHTML = "You are logged in as " + localStorage.username + ". " + logout.link("http:/" + "/localhost/xampp/prj3/index.html");
+                        				}
+
+                        				function logout() {
+                            				localStorage.username = null;
+                                    	}
+
+                                        function search() {
+                                            var city = document.forms["signInForm"]["City"].value;
+                                            var xmlhttp = new XMLHttpRequest();
+                                            var params = "Location="+city;
+                                            xmlhttp.onreadystatechange=function() {
+                                                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                                                        document.getElementById("app").innerHTML = xmlhttp.responseText;
+                                                    }
+                                                }
+                                            xmlhttp.open("GET", "php/viewhotelreview.php?"+params, true); //AJAX Set request
+                                            xmlhttp.send(); //AJAX Send request
+                                        }
+
+                                    </script>
+
+                            </article>
+
+					</div>
+		
+				<!-- Footer -->
+					<div id="footer">
+						<ul class="copyright">
+							<li>&copy; FancyHotel.com</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><br><p id="user" onclick="logout()"></p><a href="http://localhost/xampp/prj3/choosefunctionality.html#app"> Choose Functionality Screen.</a>
+						</ul>
+					</div>
+
+		
+			</div>
+
+	</body>
+</html>

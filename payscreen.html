@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<!--
+	Astral by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Payment Information</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/init.js"></script>
+		<script type="text/javascript">
+
+        </script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+			<link rel="stylesheet" href="css/style-noscript.css" />
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	</head>
+	<body onload="getName()">
+
+		<!-- Wrapper-->
+			<div id="wrapper">
+				
+				<!-- Nav -->
+					<nav id="nav">
+						<a href="#me" class="icon fa-home active"><span>Home</span></a>
+						<a href="#app" class="icon fa-bed"><span>Application</span></a>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						
+						<!-- Me -->
+							<article id="me" class="panel">
+								<header>
+									<h1>Fancy Hotel</h1>
+									<p>Book a fancy hotel today!</p>
+								</header>
+								<a href="#app" class="jumplink pic">
+									<span class="arrow icon fa-chevron-right"><span></span></span>
+									<img src="http://cache.marriott.com/propertyimages/b/budhu/phototour/budhu_phototour42.jpg?Log=1" alt="" width="560">
+								</a>
+							</article>
+
+						<!-- app --> 
+                            <article id="app" class="panel">
+                                    <div id="container"> 
+                                    
+                                </form>
+                                      <div class="ui-block-b">
+                                    <form id="payForm" name="payForm" method="POST">
+                                    	The total cost is $<script type="text/javascript">document.write(localStorage.cost);</script>.00.<br>
+                                    	<span id="text">Card Number:</span>
+                                        <input type="text" id="cardnum" name="cardnum"><br>
+
+                                        <button type="button" onclick="pay();">Confirm</button>
+
+                                        <br>
+                                </form>
+                                    </div>
+
+                                    <script>
+                                    	function getName() {
+				                            if (localStorage.username == null || localStorage.username == "null") {
+				                                window.location.href = 'http://localhost/xampp/prj3/index.html#app';
+				                            }
+                                    		var logout = "Log out?";
+											document.getElementById("user").innerHTML = "You are logged in as " + localStorage.username + ". " + logout.link("http:/" + "/localhost/xampp/prj3/index.html");
+                        				}
+
+                        				function logout() {
+                            				localStorage.username = null;
+                                    	}
+
+                                    	function pay() {
+                                    		var xmlhttp = new XMLHttpRequest();
+                                    		var cardnum = document.forms["payForm"]["cardnum"].value;
+                                            var params = "Card_Number="+cardnum+"&Customer=" + localStorage.username+"&Start_Date="+localStorage.startDate+"&End_Date="+localStorage.endDate+"&Total_Cost="+localStorage.cost+"&ExtraBed="+localStorage.extraBed+"&Room_Num="+localStorage.roomnum+"&Location="+localStorage.city;
+                                            xmlhttp.onreadystatechange=function() {
+                                                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                                                        if (xmlhttp.responseText.charAt(0) != 'E') {
+                                                            localStorage.resvID = xmlhttp.responseText;
+                                                            window.location.href = 'http://localhost/xampp/prj3/confirmationscreen.html#app';
+                                                        }
+                                                        else {
+                                                            document.getElementById("app").innerHTML = xmlhttp.responseText;
+                                                        }
+                                                    }
+                                                }
+                                            xmlhttp.open("GET", "php/pay.php?"+params, true); //AJAX Set request
+                                            xmlhttp.send(); //AJAX Send request
+                                    	}
+
+                                    </script>
+
+                            </article>
+
+					</div>
+		
+				<!-- Footer -->
+					<div id="footer">
+						<ul class="copyright">
+							<li>&copy; FancyHotel.com</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><br><p id="user" onclick="logout()"></p></p><a href="http://localhost/xampp/prj3/choosefunctionality.html#app"> Choose Functionality Screen.</a>
+						</ul>
+					</div>
+
+		
+			</div>
+
+	</body>
+</html>
