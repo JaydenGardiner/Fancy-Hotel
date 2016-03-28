@@ -8,3 +8,5 @@ I coded all HTML files and all PHP files (featuring embedded SQL). I coded all J
 I used XAMPP to run a locally hosted database populated by the Create Table and Insert SQL statements in Queries.txt.
 
 All coding was done by me (aside from database population Insert statements in Queries.txt), while my teammates Joe Sadler and Vishaak Ravi produced design deliverables such as an ER diagram and relational schema model.
+
+![Alt text](/screenshots/Fancy Hotel 1.png?raw=true)
